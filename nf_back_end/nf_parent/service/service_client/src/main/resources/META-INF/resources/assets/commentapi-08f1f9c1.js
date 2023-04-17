@@ -1,0 +1,1 @@
+import{a0 as e}from"./index-7043f5d2.js";const o="/cliservice/comment",l=(t,m,s)=>e({url:o+"/getCommentList/"+m+"/"+s,method:"post",data:t}),a=t=>e({url:o+"/log/addComment",method:"post",data:t}),n=(t,m,s)=>e({url:o+"/log/getCommListByArticleId/"+t+"/"+m+"/"+s,method:"get"}),c=t=>e({url:o+"/log/delComment",method:"delete",data:{id:t}});export{a,n as b,c as d,l as g};

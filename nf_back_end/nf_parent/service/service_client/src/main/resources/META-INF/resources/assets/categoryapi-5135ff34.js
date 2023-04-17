@@ -1,0 +1,1 @@
+import{a0 as e}from"./index-7043f5d2.js";const t="/cliservice/category",o=()=>e({url:t+"/getFirstCates",method:"get"}),r=s=>e({url:t+"/getSecondCates/"+s,method:"get"}),g=()=>e({url:t+"/getTreeCates",method:"get"});export{r as a,g as b,o as g};

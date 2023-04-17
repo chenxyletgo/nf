@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.self.cliservice.mapper.ArticleMapper">
+
+    <select id="selectArticlePro" resultType="vip.self.cliservice.entity.pro.ArticlePro">
+        select main_temp.*, com_temp.comment_count
+        from
+        (
+            select art.*, lia_temp.`like`
+            from t_article art left join
+                (
+                    select art.id as articleId, count(1) as `like`
+                    from t_article art join t_like_a lia
+                    on art.is_deleted = 0 and lia.is_deleted = 0 and art.id = lia.article_id
+                    group by art.id
+                ) as lia_temp
+            on art.id = lia_temp.articleId
+            where art.is_deleted = 0
+        ) as main_temp
+        left join
+        (
+            select art.id as articleId, count(1) as comment_count
+            from t_article art join t_comment com
+            on art.is_deleted = 0 and com.is_deleted = 0 and  com.reply_type = 0 and art.id = com.reply_id
+            group by art.id
+        ) as com_temp
+        on main_temp.id = com_temp.articleId
+        ${ew.customSqlSegment}
+    </select>
+
+</mapper>

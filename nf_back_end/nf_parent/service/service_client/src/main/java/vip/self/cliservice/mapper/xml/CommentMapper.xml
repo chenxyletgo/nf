@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vip.self.cliservice.mapper.CommentMapper">
+
+    <select id="selectCommentPro" resultType="vip.self.cliservice.entity.pro.CommentPro">
+        select com.*, lic_temp.like_count from t_comment com left join
+        (
+          select comment_id, count(1) as like_count
+          from t_like_c
+          where attitude = 1 and is_deleted = 0
+          group by comment_id
+        ) as lic_temp
+        on com.id = lic_temp.comment_id
+        ${ew.customSqlSegment}
+    </select>
+
+    <select id="selectCommentByArticleId" resultType="vip.self.cliservice.entity.Comment">
+        select * from t_comment
+        where (
+                reply_type = 1 and is_deleted = 0 and
+                reply_id in (select id from t_comment where reply_type = 0 and reply_id = #{articleId})
+              )
+        or (reply_type = 0 and reply_id = #{articleId} and is_deleted = 0)
+    </select>
+
+</mapper>
